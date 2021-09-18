@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import "../styles/tasklist.scss";
 
@@ -20,14 +20,15 @@ export function TaskList() {
 
     const randomId = Math.floor(Math.random() * 100000);
 
-    if (newTaskTitle == "") {
-      alert("A tarefa requere um título.");
-      return;
-    }
+    if (newTaskTitle == "") return;
 
-    setTasks(
-      [{ id: randomId, title: newTaskTitle, isComplete: false }].concat(tasks)
-    );
+    const newTask = {
+      id: randomId,
+      title: newTaskTitle,
+      isComplete: false,
+    };
+
+    setTasks((oldState) => [...oldState, newTask]);
   }
 
   function handleToggleTaskCompletion(id: number) {
@@ -47,6 +48,10 @@ export function TaskList() {
 
   function handleRemoveTask(id: number) {
     // Remova uma task da listagem pelo ID
+
+    const filteredTasks = tasks.filter((task) => task.id !== id);
+
+    setTasks(filteredTasks);
   }
 
   return (
@@ -88,7 +93,6 @@ export function TaskList() {
                   />
                   <span className="checkmark"></span>
                 </label>
-                <p>{task.id}</p>
                 <p>{task.title}</p>
               </div>
 
